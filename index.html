@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Chicagoland</title>
+        <link href="css/style.css" rel="stylesheet">
+        <script src="js/lib/raphael.min.js"></script>
+        <script src="js/lib/jquery-3.1.1.min.js"></script>
+        <script src="js/lib/knockout-3.4.1.js"></script>
+    </head>
+    <body>
+        <header>
+            <button class="hamburger">&#9776;</button>
+            <button class="cross">&#735;</button>
+            <button class="reload">&#10227;</button>
+            <h2 class="title">Chicago - City By The Lake</h2>
+        </header>
+        <div class="options-box">
+            <div class="location">
+                <div id="svgmap"></div>
+                    <span id="intro">
+                        <p>Chicagoans take pride in the city's diverse and vibrant neighborhoods, each with its own mix of attractions.</p>
+                        <p>Click on each of the four map areas to see a list of featured neighborhoods.</p>
+                    </span>
+                        <div>
+                            <ul class="hidden" id="north">
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="hidden" id="downtown">
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="hidden" id="west">
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="hidden" id="south">
+                            </ul>
+                        </div>
+                        <input id="neighborhood" type="text" placeholder="Enter any other neighborhood name">
+                        <input id="zoomToArea" type="button" value="Go!">
+            </div>
+            <div class="choices">
+                <h3>What are you in the mood of?</h3>
+                <select id="interest">
+                    <option value="coffee">I need to wake up first!</option>
+                    <option value="yoga">My body needs yoga</option>
+                    <option value="beer">Grab a beer!</option>
+                    <option value="bookstore">Pick up a good book</option>
+                    <option value="pizza">Hungry for some pizza</option>
+                </select>
+                <input id="search" type="button" value="Search">
+                <input id="clear" type="button" value="Clear Search Results">
+            </div>
+        </div>
+        <div id="map"></div>
+    <script src="js/map.js"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=AIzaSyDZxxM48htFpA11dooqdDV49iOxb8MUigc&v=3&callback=initMap">
+    </script>
+    </body>
+</html>
