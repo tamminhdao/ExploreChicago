@@ -77,7 +77,7 @@ var neighborhoodNames = {
     "south": ["Bridgeport", "Bronzeville", "China Town", "Hyde Park", "Kenwood"]
 };
 
-var htmlNames = '<li>%data%</li>';
+var htmlNames = '<li class="neighborhoods">%data%</li>';
 
 for (key in neighborhoodNames) {
     neighborhoodNames[key].forEach (function (value) {
@@ -156,9 +156,9 @@ function initMap() {
     });
 
     //Zoom to neighborhood as user click on a name on the list
-    $("li").click (function() {
+    $(".neighborhoods").click (function() {
         //make sure only one item is selected at a time
-        $("li").removeClass ("selected");
+        $(".neighborhoods").removeClass ("selected");
         $(this).addClass ("selected");
         zoomToSelected();
     });
@@ -168,7 +168,11 @@ function initMap() {
         zoomToNeighborhood();
     });
 
-    $("#search").click (function() {
+    //Drop markers on the map when user select an explore option
+    $(".options").click (function() {
+        $(".options").removeClass ("chosen");
+        $(this).addClass ("chosen");
+        //Foursquare API ajax request 
         foursquareCall();
     });
 
@@ -189,7 +193,9 @@ function resetMap() {
             return this.defaultValue;
         });
         //Remove any previously selected neighborhoods
-        $("li").removeClass ("selected");
+        $(".neighborhoods").removeClass ("selected");
+        //Remove explore options
+        $(".options").removeClass ("chosen");
         //Reset the svg map introduction
         for (area in chicago) {
             document.getElementById(area).style.display = "none";
@@ -254,7 +260,7 @@ function foursquareCall() {
     console.log (latlng);
 
     //Obtain the search keyword for the query param
-    var searchKeyword = $("#interest").val();
+    var searchKeyword = $(".chosen").attr('data-value');
     console.log(searchKeyword);
     
     var largeInfowindow = new google.maps.InfoWindow();

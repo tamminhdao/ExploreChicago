@@ -149,12 +149,10 @@ li {
 
 #neighborhood {
     width: 75%;
-    height: 25px;
-    font-size: 1em;
 }
 
 #zoomToArea {
-    width: 15%
+    width: 15%;
 }
 
 /******************************
@@ -164,10 +162,21 @@ li {
     width: 100%;
     float: right;
     text-align: left;
+    font-size: 1em;
+}
+
+h4 {
+    font-size: 1.2em;
+    margin: 0;
 }
 
 #interest {
-    width: 80%;
-    height: 35px;
-    font-size: 1em;
+    padding-left: 30%;
+    text-align: left;
+}
+
+.chosen {
+    font-weight: bold;
+    font-size: 1.2em;
+    font-style: italic;
 }
