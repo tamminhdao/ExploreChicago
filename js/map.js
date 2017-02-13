@@ -161,6 +161,8 @@ function initMap() {
         $(".neighborhoods").removeClass ("selected");
         $(this).addClass ("selected");
         zoomToSelected();
+        //remove any previous explore options
+        $(".options").removeClass ("chosen");
     });
 
     //Zoom to neighborhood when user manually type in a name
@@ -321,6 +323,7 @@ function hideListing () {
     for (i=0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
+    $(".options").removeClass ("chosen");
     markers = [];
 }
 
