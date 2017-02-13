@@ -25,7 +25,7 @@ var svgmap = new Raphael(svgmapContainer, width, height);
 //Style has to be defined before adding style attribute to svgmap
 //style the downtown
 var downtownStyle = {
-  fill: "#000099",
+  fill: "#0088cc",
   stroke: "#aaa",
   "stroke-width": 1,
   "stroke-linejoin": "round",
@@ -34,7 +34,7 @@ var downtownStyle = {
 
 //style the north
 var northStyle = {
-  fill: "#990099",
+  fill: "#009933",
   stroke: "#aaa",
   "stroke-width": 1,
   "stroke-linejoin": "round",
@@ -43,7 +43,7 @@ var northStyle = {
 
 //style the west
 var westStyle = {
-  fill: "#992600",
+  fill: "#cc3300",
   stroke: "#aaa",
   "stroke-width": 1,
   "stroke-linejoin": "round",
@@ -52,7 +52,7 @@ var westStyle = {
 
 //style the south
 var southStyle = {
-  fill: "#009933",
+  fill: "#ffd633",
   stroke: "#aaa",
   "stroke-width": 1,
   "stroke-linejoin": "round",
@@ -72,7 +72,7 @@ chicago.south = svgmap.path("M 129.05078 131.65234 C 128.92793 132.05249 128.784
 //Feautured neighborhoods 
 var neighborhoodNames = {
     "north": ["Andersonville", "Lakeview", "Lincoln Park", "North Center", "Old Town", "Uptown", "Wicker Park"],
-    "downtown": ["China Town", "Gold Coast", "Mag Mile", "River North", "South Loop", "Streeterville", "The Loop"],
+    "downtown": ["China Town", "Gold Coast", "Loop", "Mag Mile", "River North", "South Loop"],
     "west": ["Greektown", "Little Italy", "Pilsen", "West Town", "West Loop"],
     "south": ["Bridgeport", "Bronzeville", "Hyde Park", "Jackson Park", "Kenwood"]
 };
@@ -82,7 +82,7 @@ var htmlNames = '<li>%data%</li>';
 for (key in neighborhoodNames) {
     neighborhoodNames[key].forEach (function (value) {
         var formattedNames = htmlNames.replace ("%data%", value);
-        $("#" + key).append(formattedNames); //document.getElementById(key) doesn't work out well. Must use jQuery.
+        $("#" + key).append(formattedNames);
     })
 }
 
