@@ -156,10 +156,6 @@ function resetMap() {
             document.getElementById(area).style.display = "none";
         }
         document.getElementById("intro").style.display = "block";
-        //Hide the Menu
-        //$(".options-box").hide();
-        //$(".cross").hide();
-        //$(".hamburger").show();
 }
 
 //Zoom to neighborhood as user click on a name on the list
