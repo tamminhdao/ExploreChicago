@@ -105,9 +105,48 @@ for (area in chicago) {
 var map;
 var markers = [];
 function initMap() {
+    //style the map
+    var styles = [
+        {
+            featureType: 'poi',
+            elementType: 'poi.attraction',
+            stylers : [
+                { weight: 10 }
+            ]
+        },
+        {
+            featureType: 'poi',
+            elementType: 'poi.park',
+            stylers : [
+                { weight: 9 }
+            ]
+        },
+        {
+            featureType: 'road',
+            elementType: 'road.highway',
+            stylers : [
+                { visibility: 'simplified' }
+            ]
+        },
+        {
+            featureType: 'road.highway',
+            elementType: 'labels.icon',
+            stylers: [
+              { visibility: 'off' }
+            ]
+        },
+        {
+            featureType: 'administrative',
+            elementType: 'administrative.neighborhood',
+            stylers : [
+                { visibility: 'off' }
+            ]
+        }
+    ];
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 41.853853, lng: -87.724443},
         zoom: 12,
+        styles: styles,
         mapTypeControl: false
     });
 
