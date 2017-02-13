@@ -71,10 +71,10 @@ chicago.south = svgmap.path("M 129.05078 131.65234 C 128.92793 132.05249 128.784
 
 //Feautured neighborhoods 
 var neighborhoodNames = {
-    "north": ["Andersonville", "Lakeview", "Lincoln Park", "North Center", "Old Town", "Uptown", "Wicker Park"],
-    "downtown": ["China Town", "Gold Coast", "Loop", "Mag Mile", "River North", "South Loop"],
-    "west": ["Greektown", "Little Italy", "Pilsen", "West Town", "West Loop"],
-    "south": ["Bridgeport", "Bronzeville", "Hyde Park", "Jackson Park", "Kenwood"]
+    "north": ["Andersonville", "Lakeview", "Lincoln Park", "North Center", "Old Town", "Uptown"],
+    "downtown": ["Gold Coast", "Loop", "River North", "Streeterville" ,"South Loop"],
+    "west": ["Little Italy", "Pilsen", "Wicker Park", "West Town", "West Loop"],
+    "south": ["Bridgeport", "Bronzeville", "China Town", "Hyde Park", "Kenwood"]
 };
 
 var htmlNames = '<li>%data%</li>';
@@ -259,7 +259,7 @@ function foursquareCall() {
     
     var largeInfowindow = new google.maps.InfoWindow();
 
-    var foursquareUrl = "https://api.foursquare.com/v2/venues/search?ll=" + latlng + "&query=" + searchKeyword + "&radius=1000&client_id=POWMWFWIJYX2DYSPVDZGWUALNC4RON5ROTEPHNDZKIYOTUTR&client_secret=PHC4Z52PPQJM5SMCLNN4UAGVYW5PQIKOWX23FDQWLCVB3J3S&v=20170203";
+    var foursquareUrl = "https://api.foursquare.com/v2/venues/search?ll=" + latlng + "&query=" + searchKeyword + "&radius=800&client_id=POWMWFWIJYX2DYSPVDZGWUALNC4RON5ROTEPHNDZKIYOTUTR&client_secret=PHC4Z52PPQJM5SMCLNN4UAGVYW5PQIKOWX23FDQWLCVB3J3S&v=20170203";
     console.log(foursquareUrl);
     $.ajax({
         url: foursquareUrl,
