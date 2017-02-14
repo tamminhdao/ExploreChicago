@@ -86,6 +86,41 @@ for (key in neighborhoodNames) {
     })
 }
 
+
+//A list of Explore options
+
+var options = {
+    "activities": [{
+        "value": "coffee",
+        "label": "a cup of coffee"
+    },{
+        "value": "restaurant",
+        "label": "a bite to eat"
+    }, {
+        "value": "hotel",
+        "label": "a place to stay"
+    }, {
+        "value": "bookstore",
+        "label": "a bookstore"
+    }, {
+        "value": "atm",
+        "label": "an ATM"
+    }, {
+        "value": "yoga",
+        "label": "a yoga studio"
+    }]
+};
+
+var htmlOptions = '<li class="options" data-value="%value%">%label%<button class="clear">&#735</button></li>';
+
+for (key in options) {
+    options[key].forEach (function (item) {
+        var formattedOptions = htmlOptions.replace("%label%", item.label);
+        var formattedOptions = formattedOptions.replace("%value%", item.value);
+        $("#interest").append(formattedOptions);
+    })
+}
+
 //On the side panel
 //display a list of neighborhoods when users click on corresponding area of the svg map
 var current = null;
