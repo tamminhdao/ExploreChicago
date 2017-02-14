@@ -144,8 +144,10 @@ function initMap() {
         }
     ];
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 41.853853, lng: -87.724443},
-        zoom: 12,
+        //center: {lat: 41.880629, lng: -87.674048}, //United Center
+        //center: {lat: 41.879436, lng: -87.644418}, //Old St. Patrick Church
+        center: {lat: 41.878876, lng: -87.635915}, //Willis Tower
+        zoom: 14,
         styles: styles,
         mapTypeControl: false
     });
@@ -172,13 +174,23 @@ function initMap() {
 
     //Drop markers on the map when user select an explore option
     $(".options").click (function() {
+        //make sure only one item is chosen at a time
         $(".options").removeClass ("chosen");
         $(this).addClass ("chosen");
         //Foursquare API ajax request 
         foursquareCall();
     });
 
+/*
+    $(".options"). mouseenter (function () {
+        $(this).find("button").show();
+    })
+    .mouseleave (function () {
+        $(this).find("button").hide();
+    });
+*/
     $("#clear").click (function() {
+        console.log ("HIDE");
         hideListing();
     });
 }
@@ -186,8 +198,8 @@ function initMap() {
 //Reset map for a new search
 function resetMap() {
         //reset google map to wide view
-        map.setCenter({lat: 41.853853, lng: -87.724443});
-        map.setZoom(12);
+        map.setCenter({lat: 41.878876, lng: -87.635915});
+        map.setZoom(14);
         //delete all markers
         hideListing();
         //Reset value of the neighborhood search box
