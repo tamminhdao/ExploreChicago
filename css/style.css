@@ -156,7 +156,7 @@ li {
 }
 
 /******************************
-    OPTIONS-BOX / INTEREST
+    OPTIONS-BOX / EXPLORE
 *******************************/
 .choices {
     width: 100%;
@@ -195,6 +195,12 @@ h4 {
     outline: none;
 }
 
-#clear {
+.options {
+    display: inline-block; /* this is a <p> elelment */
+    margin: 0;
+    padding: 0 10px;
+}
+
+#empty{
     margin-left: 50%;
 }

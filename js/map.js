@@ -3,13 +3,13 @@ $(".cross").hide();
 $(".options-box").hide();
 
 $(".hamburger").click(function() {
-    $(".options-box"). animate ({width: 'toggle'});
+    $(".options-box").animate ({width: 'toggle'});
     $(".hamburger").hide();
     $(".cross").show();
 });
 
 $(".cross").click(function() {
-    $(".options-box"). animate ({width: 'toggle'});
+    $(".options-box").animate ({width: 'toggle'});
     $(".cross").hide();
     $(".hamburger").show();
 });
@@ -86,7 +86,6 @@ for (key in neighborhoodNames) {
     })
 }
 
-
 //A list of Explore options
 
 var options = {
@@ -111,7 +110,7 @@ var options = {
     }]
 };
 
-var htmlOptions = '<li class="options" data-value="%value%">%label%<button class="clear">&#735</button></li>';
+var htmlOptions = '<li> <p class="options" data-value="%value%"> %label% </p> <button class="clear">&#735;</button> </li>';
 
 for (key in options) {
     options[key].forEach (function (item) {
@@ -135,10 +134,23 @@ for (area in chicago) {
     })(chicago[area], area);
 }
 
-
 // Google Map
 var map;
-var markers = [];
+var markers = {};
+
+/* Put markers into different catergories so we can pick and choose which ones to show or hide
+markers = {
+    atm: [],
+    coffee: [],
+    etc...
+}
+*/
+for (key in options) {
+    options[key].forEach (function (item) {
+        markers[item.value] = [];
+    });
+}
+
 function initMap() {
     //style the map
     var styles = [
@@ -194,12 +206,10 @@ function initMap() {
 
     //Zoom to neighborhood as user click on a name on the list
     $(".neighborhoods").click (function() {
-        //make sure only one item is selected at a time
+        //make sure only one neighborhood is selected at a time
         $(".neighborhoods").removeClass ("selected");
         $(this).addClass ("selected");
         zoomToSelected();
-        //remove any previous explore options
-        $(".options").removeClass ("chosen");
     });
 
     //Zoom to neighborhood when user manually type in a name
@@ -214,19 +224,25 @@ function initMap() {
         $(this).addClass ("chosen");
         //Foursquare API ajax request 
         foursquareCall();
+        //Show the cross 
+        $(".chosen ~ button"). show();
     });
 
-/*
-    $(".options"). mouseenter (function () {
-        $(this).find("button").show();
-    })
-    .mouseleave (function () {
-        $(this).find("button").hide();
+    $(".clear").click (function() {
+        var catergory = $(this).siblings(".options").attr('data-value');
+        console.log (catergory);
+        //empty only the matching catergory array in the {markers}
+        for (i=0; i < markers[catergory].length; i++) {
+            markers[catergory][i].setMap(null);
+        }
+        //hide the cross
+        $(this).hide();
+        //if <p> happens to be chosen, remove class chosen
+        $(this).siblings(".options").removeClass("chosen");
     });
-*/
-    $("#clear").click (function() {
-        console.log ("HIDE");
-        hideListing();
+
+    $("#empty").click (function() {
+        hideAllListings(); //one click to wipe out all search results in the explore section (not neighborhood)
     });
 }
 
@@ -235,8 +251,8 @@ function resetMap() {
         //reset google map to wide view
         map.setCenter({lat: 41.878876, lng: -87.635915});
         map.setZoom(14);
-        //delete all markers
-        hideListing();
+        //delete all markers and empty out the markers object
+        hideAllListings(); 
         //Reset value of the neighborhood search box
         $("#neighborhood").val(function () {
             return this.defaultValue;
@@ -254,6 +270,8 @@ function resetMap() {
 
 //Zoom to neighborhood as user click on a name on the list
 function zoomToSelected() {
+    //clear all previous search results
+    hideAllListings();
     //Reset value of the neighborhood search box
     $("#neighborhood").val(function () {
         return this.defaultValue;
@@ -276,8 +294,10 @@ function zoomToSelected() {
 
 //Zoom to neighborhood when user manually type in a name
 function zoomToNeighborhood() {
+    //clear previous seach results
+    hideAllListings ();
     //Remove any previously selected neighborhoods from the svgmap list
-        $("li").removeClass ("selected");
+    $("li").removeClass ("selected");
     //initialize the geocoder
     var geocoder = new google.maps.Geocoder();
     //obtain the user-input adress
@@ -341,7 +361,8 @@ function foursquareCall() {
 
                     //Push each marker into our array of markers
                     //This is so we can hide all markers with one click
-                    markers.push(marker);
+                    markers[searchKeyword].push(marker);
+
 
                     //Create an onclick event to open an infowindow when each marker is clicked
                     marker.addListener('click', function() {
@@ -349,7 +370,7 @@ function foursquareCall() {
                     })
                 }
             }
-            //console.log (markers.length);
+            console.log (markers[searchKeyword].length);
         }
     });
 }
@@ -366,11 +387,17 @@ function populateInfoWindow(marker, infowindow) {
     }
 }
 
-function hideListing () {
-    for (i=0; i < markers.length; i++) {
-        markers[i].setMap(null);
-    }
+function hideAllListings() {
+    //remove all chosen items
     $(".options").removeClass ("chosen");
-    markers = [];
+    //hide all the cross
+    $(".clear").hide();
+    //hide all markers on the map and empty all array in {markers}
+    for (key in markers) {
+        for (i=0; i < markers[key].length; i++) {
+            markers[key][i].setMap(null);
+        }
+        markers[key] = [];
+    }
 }
 
