@@ -91,22 +91,22 @@ for (key in neighborhoodNames) {
 var options = {
     "activities": [{
         "value": "coffee",
-        "label": "I am looking for a coffee shop"
+        "label": "Looking for a coffee shop"
     },{
         "value": "restaurant",
-        "label": "I am looking for a bite to eat"
+        "label": "Looking for a bite to eat"
     }, {
         "value": "hotel",
-        "label": "I am looking for a place to stay"
+        "label": "Looking for a place to stay"
     }, {
         "value": "bookstore",
-        "label": "I am looking for a bookstore"
+        "label": "Looking for a bookstore"
     }, {
         "value": "atm",
-        "label": "I am looking for an ATM"
+        "label": "Looking for an ATM"
     }, {
         "value": "yoga",
-        "label": "I am looking for a yoga studio"
+        "label": "Looking for a yoga studio"
     }]
 };
 
