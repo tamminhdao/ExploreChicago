@@ -18,10 +18,9 @@ body {
     background: #1d1f20;
     color: #fff;
     line-height: 35px;
-    padding: 20px;
     text-align: left;
-    /* width: 25%; */
     height: 100%;
+    padding: 20px; 
     overflow: auto; /*prevent this div from collapsing becausing of its floating children*/
 }
 
@@ -98,6 +97,11 @@ header {
 /**********************************
     OPTIONS-BOX / NEIGHBORHOOD
 ***********************************/
+
+.location {
+    width: 100%;
+}
+
 h3 {
     margin: 0;
 }
@@ -163,7 +167,7 @@ li {
 *******************************/
 .choices {
     width: 100%;
-    float: right;
+    float: left;
     text-align: left;
     font-size: 1em;
 }
@@ -200,7 +204,7 @@ li {
 }
 
 #empty{
-    float: right;
+    margin-left: 20px;
 }
 
 /******************************
@@ -218,9 +222,8 @@ li {
     
     #intro {
         display: block;
-        max-width: 100%;
+        max-width: 90%; /* offset the padding on options-box*/
     }
-
     .mobile {
         display: block;
     }
