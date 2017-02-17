@@ -21,7 +21,7 @@ body {
     text-align: left;
     height: 100%;
     padding: 20px; 
-    overflow: auto; /*prevent this div from collapsing becausing of its floating children*/
+    overflow: auto; /*prevent div from collapsing becausing of its floating children*/
 }
 
 /* Google Map */
@@ -210,7 +210,7 @@ li {
 /******************************
     RESPONSIVE DESIGN
 *******************************/
-/*Phone*/
+
 @media screen and (max-width: 704px) {
     .options-box {
         width: 100%;
@@ -224,6 +224,7 @@ li {
         display: block;
         max-width: 90%; /* offset the padding on options-box*/
     }
+
     .mobile {
         display: block;
     }
@@ -233,7 +234,6 @@ li {
     }
 }
 
-/*Tablet*/
 @media screen and (min-width: 705px) and (max-width: 1017px){
     .options-box {
         width: 45%;
@@ -243,8 +243,6 @@ li {
     }
 }
 
-
-/*Laptop and Desktop*/
 @media screen and (min-width: 1018px) {
     .options-box {
         width: 30%;

@@ -137,6 +137,8 @@ for (area in chicago) {
 // Google Map
 var map;
 var markers = {};
+var defaultIcon;
+var highlightedIcon;
 
 /* Put markers into different catergories so we can pick and choose which ones to show or hide
 markers = {
@@ -199,6 +201,13 @@ function initMap() {
         mapTypeControl: false
     });
 
+    // Style the markers
+    defaultIcon = makeMarkerIcon('0091ff');
+
+    // Create a "highlighted location" marker color for when the user
+    // mouses over the marker.
+    highlightedIcon = makeMarkerIcon('ff0000');
+
     //Reset map for a new search
     $(".reload").click (function() {
         resetMap();
@@ -230,7 +239,7 @@ function initMap() {
 
     $(".clear").click (function() {
         var catergory = $(this).siblings(".options").attr('data-value');
-        console.log (catergory);
+        console.log ('Clear markers for: ' + catergory);
         //empty only the matching catergory array in the {markers}
         for (i=0; i < markers[catergory].length; i++) {
             markers[catergory][i].setMap(null);
@@ -326,11 +335,10 @@ function foursquareCall() {
     var lat = map.center.lat();
     var lng = map.center.lng();
     var latlng = lat + "," + lng;
-    console.log (latlng);
 
     //Obtain the search keyword for the query param
     var searchKeyword = $(".chosen").attr('data-value');
-    console.log(searchKeyword);
+    console.log('Searching for: ' + searchKeyword);
     
     var largeInfowindow = new google.maps.InfoWindow();
 
@@ -355,22 +363,31 @@ function foursquareCall() {
                     var marker = new google.maps.Marker({
                         position: latLng,
                         map: map,
+                        icon: defaultIcon,
                         title: title,
                         animation: google.maps.Animation.DROP,
                     })
 
                     //Push each marker into our array of markers
-                    //This is so we can hide all markers with one click
+                    //so we can hide all markers of the same catergory
                     markers[searchKeyword].push(marker);
-
 
                     //Create an onclick event to open an infowindow when each marker is clicked
                     marker.addListener('click', function() {
                         populateInfoWindow (this, largeInfowindow);
                     })
+
+                    // Two event listeners - one for mouseover, one for mouseout,
+                    // to change the colors back and forth.
+                    marker.addListener ('mouseover', function() {
+                        this.setIcon(highlightedIcon);
+                    });
+                    marker.addListener ('mouseout', function() {
+                        this.setIcon(defaultIcon);
+                    });
                 }
             }
-            console.log (markers[searchKeyword].length);
+            //console.log (markers[searchKeyword].length);
         }
     });
 }
@@ -385,6 +402,21 @@ function populateInfoWindow(marker, infowindow) {
         infowindow.setContent('<div>' + marker.title + '</div>');
         infowindow.open(map, marker);
     }
+}
+
+// This function takes in a COLOR, and then creates a new marker
+// icon of that color. The icon will be 21 px wide by 34 high, have an origin
+// of 0, 0 and be anchored at 10, 34).
+function makeMarkerIcon(markerColor) {
+    var markerImage = {
+        url: 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+        '|40|_|%E2%80%A2',
+        size: new google.maps.Size(21, 34),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(10, 34),
+        scaledSize: new google.maps.Size(21, 34)
+        };
+    return markerImage;
 }
 
 function hideAllListings() {
