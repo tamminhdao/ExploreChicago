@@ -218,11 +218,22 @@ function initMap() {
         //make sure only one neighborhood is selected at a time
         $(".neighborhoods").removeClass ("selected");
         $(this).addClass ("selected");
+        //clear all previous search results
+        hideAllListings();
+        //Reset value of the neighborhood search box (display on mobile)
+        $("#neighborhood").val (function () {
+            return this.defaultValue;
+        });
         zoomToSelected();
     });
 
-    //Zoom to neighborhood when user manually type in a name
+    //Zoom to neighborhood when user manually type in a neighborhood name on the search box (display on mobile)
     $("#zoomToArea").click (function() {
+        //clear previous seach results
+        hideAllListings ();
+        //Remove any previously selected neighborhoods from the svgmap list
+        $(".neighborhood").removeClass ("selected");
+        //initialize the geocoder
         zoomToNeighborhood();
     });
 
@@ -231,10 +242,10 @@ function initMap() {
         //make sure only one item is chosen at a time
         $(".options").removeClass ("chosen");
         $(this).addClass ("chosen");
-        //Foursquare API ajax request 
-        foursquareCall();
         //Show the cross 
         $(".chosen ~ button"). show();
+        //Foursquare API ajax request 
+        foursquareCall();
     });
 
     $(".clear").click (function() {
@@ -273,18 +284,12 @@ function resetMap() {
         //Reset the svg map introduction
         for (area in chicago) {
             document.getElementById(area).style.display = "none";
-        }
+            }
         document.getElementById("intro").style.display = "block";
 }
 
 //Zoom to neighborhood as user click on a name on the list
 function zoomToSelected() {
-    //clear all previous search results
-    hideAllListings();
-    //Reset value of the neighborhood search box
-    $("#neighborhood").val(function () {
-        return this.defaultValue;
-    });
     var chosenName = $(".selected").text();
     var geocoder = new google.maps.Geocoder ();
     geocoder.geocode ({
@@ -303,11 +308,6 @@ function zoomToSelected() {
 
 //Zoom to neighborhood when user manually type in a name
 function zoomToNeighborhood() {
-    //clear previous seach results
-    hideAllListings ();
-    //Remove any previously selected neighborhoods from the svgmap list
-    $("li").removeClass ("selected");
-    //initialize the geocoder
     var geocoder = new google.maps.Geocoder();
     //obtain the user-input adress
     var neighborhood = $("#neighborhood").val();
@@ -344,14 +344,25 @@ function foursquareCall() {
 
     var foursquareUrl = "https://api.foursquare.com/v2/venues/search?ll=" + latlng + "&query=" + searchKeyword + "&radius=800&client_id=POWMWFWIJYX2DYSPVDZGWUALNC4RON5ROTEPHNDZKIYOTUTR&client_secret=PHC4Z52PPQJM5SMCLNN4UAGVYW5PQIKOWX23FDQWLCVB3J3S&v=20170203";
     console.log(foursquareUrl);
+
+    //Handle Error
+    var requestTimeout = setTimeout (function(){
+        window.alert ("Foursquare is taking longer than usual to response.");
+    }, 5000); //wait 5 sec
+
     $.ajax({
         url: foursquareUrl,
         dataType: 'jsonp',
         success: function (response) {
+            //If ajax resquest went through, abort error alert
+            clearTimeout (requestTimeout);
+
             var restaurantList = response.response.venues;
             //check if the ajax request return any result
             if (restaurantList.length == 0) {
-                window.alert ('Sorry. We cannot find anything that match your search')
+                window.alert ('We cannot find any venue that matches your search.');
+                //Do not show the cross sign on selected options
+                $(".chosen ~ button"). hide();
             }
             else {
                 for (var i=0; i < restaurantList.length; i++) {
@@ -392,18 +403,6 @@ function foursquareCall() {
     });
 }
 
-// This function populates the infowindow when the marker is clicked. We'll only allow
-// one infowindow which will open at the marker that is clicked, and populate based
-// on that markers position.
-function populateInfoWindow(marker, infowindow) {
-// Check to make sure the infowindow is not already opened on this marker.
-    if (infowindow.marker != marker) {
-        infowindow.marker = marker;
-        infowindow.setContent('<div>' + marker.title + '</div>');
-        infowindow.open(map, marker);
-    }
-}
-
 // This function takes in a COLOR, and then creates a new marker
 // icon of that color. The icon will be 21 px wide by 34 high, have an origin
 // of 0, 0 and be anchored at 10, 34).
@@ -417,6 +416,18 @@ function makeMarkerIcon(markerColor) {
         scaledSize: new google.maps.Size(21, 34)
         };
     return markerImage;
+}
+
+// This function populates the infowindow when the marker is clicked. We'll only allow
+// one infowindow which will open at the marker that is clicked, and populate based
+// on that markers position.
+function populateInfoWindow(marker, infowindow) {
+// Check to make sure the infowindow is not already opened on this marker.
+    if (infowindow.marker != marker) {
+        infowindow.marker = marker;
+        infowindow.setContent('<div>' + marker.title + '</div>');
+        infowindow.open(map, marker);
+    }
 }
 
 function hideAllListings() {
