@@ -5,8 +5,6 @@
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>Chicagoland</title>
         <link href="css/style.css" rel="stylesheet">
-        <script src="js/lib/raphael.min.js"></script>
-        <script src="js/lib/jquery-3.1.1.min.js"></script>
     </head>
     <body>
         <header>
@@ -53,9 +51,14 @@
             </div>
         </div>
         <div id="map"></div>
-    <script src="js/map.js"></script>
+    <!-- Hook up with js libs and files -->
+    <!-- Link Raphael lib before linking svgmap.js -->
+    <script src="js/lib/raphael.min.js"></script>
+    <script src="js/lib/jquery-3.1.1.min.js"></script>
+    <script src="js/svgmap.js"></script>
+    <script src="js/app.js"></script>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=AIzaSyDZxxM48htFpA11dooqdDV49iOxb8MUigc&v=3&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZxxM48htFpA11dooqdDV49iOxb8MUigc&v=3&callback=initMap">
     </script>
     </body>
 </html>
