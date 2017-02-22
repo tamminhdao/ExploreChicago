@@ -14,7 +14,7 @@ $(".cross").click(function() {
     $(".hamburger").show();
 });
 
-// SVG Interactive Map
+//Create SVG Interactive Map
 //Initiate the svgmap
 var width  = 200;
 var height = 300;
