@@ -8,7 +8,7 @@ var svgmap = new Raphael(svgmapContainer, width, height);
 
 //Style has to be defined before adding style attribute to svgmap
 //style the downtown
-var downtownStyle = {
+var downtownStyle = { 
   fill: "#0088cc",
   stroke: "#aaa",
   "stroke-width": 1,

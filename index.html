@@ -8,12 +8,12 @@
     </head>
     <body>
         <header>
-            <button class="hamburger">&#9776;</button>
-            <button class="cross">&#735;</button>
+            <button class="hamburger" data-bind="visible: hamburgerIcon, click: showOptions">&#9776;</button>
+            <button class="cross" data-bind="visible: crossIcon, click: hideOptions">&#735;</button>
             <button class="reload">&#10227;</button>
             <h2 class="title">CHICAGOLAND</h2>
         </header>
-        <div class="options-box">
+        <div class="options-box" data-bind="visible: optionsBox">
             <div class="location">
                 <h3>1. SELECT A NEIGHBORHOOD</h3>
                 <div id="svgmap"></div>
@@ -21,20 +21,23 @@
                     Chicagoans take pride in the city's diverse & vibrant neighborhoods, each with its own mix of attractions.
                 </span>
                 <div>
-                    <ul class="hidden" id="north">
-                        <!-- create <li> in map.js -->
+                    <ul class="hidden" id="north" data-bind="foreach: northSide">
+                        <li class="neighborhoods" data-bind="text: $data"></li>
                     </ul>
                 </div>
                 <div>
-                    <ul class="hidden" id="downtown">
+                    <ul class="hidden" id="downtown" data-bind="foreach: downtown">
+                        <li class="neighborhoods" data-bind="text: $data"></li>
                     </ul>
                 </div>
                 <div>
-                    <ul class="hidden" id="west">
+                    <ul class="hidden" id="west" data-bind="foreach: westSide">
+                        <li class="neighborhoods" data-bind="text: $data"></li>
                     </ul>
                 </div>
                 <div>
-                    <ul class="hidden" id="south">
+                    <ul class="hidden" id="south" data-bind="foreach: southSide">
+                        <li class="neighborhoods" data-bind="text: $data"></li>
                     </ul>
                 </div>
                 <div class="mobile">
@@ -44,8 +47,8 @@
             </div>
             <div class="choices">
                 <h3>2. EXPLORE</h3>
-                <ul id="interest">
-                    <!-- create <li> in map.js -->
+                <ul id="interest" data-bind="foreach: optionsList">
+                    <li class="options" data-bind="text: label, attr: {'data-value': value}, click: $parent.setOption"><button class="clear">&#735;</button></li>
                 </ul>
                 <input id="empty" type="button" value="Hide All Listings">
             </div>
@@ -54,11 +57,12 @@
     <!-- Hook up with js libs and files -->
     <!-- Link Raphael lib before linking svgmap.js -->
     <script src="js/lib/raphael.min.js"></script>
+    <script src="js/lib/knockout-3.4.1.js"></script>
     <script src="js/lib/jquery-3.1.1.min.js"></script>
     <script src="js/svgmap.js"></script>
     <script src="js/app.js"></script>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZxxM48htFpA11dooqdDV49iOxb8MUigc&v=3&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDZxxM48htFpA11dooqdDV49iOxb8MUigc&v=3&callback=initMap">
     </script>
     </body>
 </html>

@@ -1,38 +1,4 @@
-//Slide in Menu
-$(".cross").hide();
-$(".options-box").hide();
-
-$(".hamburger").click(function() {
-    $(".options-box").animate ({width: 'toggle'});
-    $(".hamburger").hide();
-    $(".cross").show();
-});
-
-$(".cross").click(function() {
-    $(".options-box").animate ({width: 'toggle'});
-    $(".cross").hide();
-    $(".hamburger").show();
-});
-
-//Feautured neighborhoods 
-var neighborhoodNames = {
-    "north": ["Andersonville", "Lakeview", "Lincoln Park", "North Center", "Old Town", "Uptown"],
-    "downtown": ["Gold Coast", "Loop", "River North", "Streeterville" ,"South Loop"],
-    "west": ["Little Italy", "Pilsen", "Wicker Park", "West Town", "West Loop"],
-    "south": ["Bridgeport", "Bronzeville", "China Town", "Hyde Park", "Kenwood"]
-};
-
-var htmlNames = '<li class="neighborhoods">%data%</li>';
-
-for (key in neighborhoodNames) {
-    neighborhoodNames[key].forEach (function (value) {
-        var formattedNames = htmlNames.replace ("%data%", value);
-        $("#" + key).append(formattedNames);
-    })
-}
-
-//A list of Explore options
-
+//Data
 var options = {
     "activities": [{
         "value": "coffee",
@@ -55,15 +21,85 @@ var options = {
     }]
 };
 
-var htmlOptions = '<li> <p class="options" data-value="%value%"> %label% </p> <button class="clear">&#735;</button> </li>';
+var neighborhoodNames = {
+    "north": ["Andersonville", "Lakeview", "Lincoln Park", "North Center", "Old Town", "Uptown"],
+    "downtown": ["Gold Coast", "Loop", "River North", "Streeterville" ,"South Loop"],
+    "west": ["Little Italy", "Pilsen", "Wicker Park", "West Town", "West Loop"],
+    "south": ["Bridgeport", "Bronzeville", "China Town", "Hyde Park", "Kenwood"]
+};
 
-for (key in options) {
-    options[key].forEach (function (item) {
-        var formattedOptions = htmlOptions.replace("%label%", item.label);
-        var formattedOptions = formattedOptions.replace("%value%", item.value);
-        $("#interest").append(formattedOptions);
+
+//Model
+var exploreOption = function(data) {
+    this.label = ko.observable (data.label);
+    this.value = ko.observable (data.value);
+};
+
+//ViewModel
+function viewModel () {
+    var self = this;
+
+    //Knockout Bindings for the Header
+    //assign initial visibility status for the selection icons and the option box
+    this.hamburgerIcon = ko.observable (true);
+    this.crossIcon = ko.observable (false);
+    this.optionsBox = ko.observable (false);
+
+    //show options box when click on hamburger icon, alternate between hamburger and cross icons
+    this.showOptions = function() {
+        self.hamburgerIcon(false);
+        self.crossIcon(true);
+        self.optionsBox(true);
+    };
+
+    //hide options box when click on hamburger icon, alternate between hamburger and cross icons
+    this.hideOptions = function() {
+        self.crossIcon(false);
+        self.hamburgerIcon(true);
+        self.optionsBox(false);
+    };
+
+    //Knockout Bindings for the Neighborhood portion in the options menu
+    //Assemble the <li> items for each <ul>
+    this.northSide = ko.observableArray([]);
+    this.downtown = ko.observableArray([]);
+    this.westSide = ko.observableArray([]);
+    this.southSide = ko.observableArray([]);
+
+    neighborhoodNames.north.forEach (function (value) {
+        self.northSide.push (value);
     })
-}
+    neighborhoodNames.downtown.forEach (function (value) {
+        self.downtown.push (value);
+    })
+    neighborhoodNames.west.forEach (function (value) {
+        self.westSide.push (value);
+    })
+    neighborhoodNames.south.forEach (function (value) {
+        self.southSide.push (value);
+    })
+
+    //Knockout Bindings for the Explore portion in the options menu
+    //Assemble the <li> items for the <ul> and make the options <ul> show on screen
+    this.optionsList = ko.observableArray([]);
+    for (key in options) {
+        options[key].forEach (function (item) {
+            self.optionsList.push (new exploreOption (item));
+        })
+    }
+
+    this.chosenOption = ko.observable ();
+
+    this.setOption = function(clickedOption) {
+        self.chosenOption(clickedOption);
+        console.log ("KO testing value: " + self.chosenOption().value());
+    }
+
+};
+
+ko.applyBindings (new viewModel());
+
+
 
 // Google Map
 var map;
