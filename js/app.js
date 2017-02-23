@@ -79,6 +79,11 @@ function viewModel () {
         self.southSide.push (value);
     })
 
+    this.selectedNeighborhood = ko.observable();
+    this.pickNeighborhood = function (clickedNeighborhood) {
+        self.selectedNeighborhood (clickedNeighborhood)
+    }
+
     //Knockout Bindings for the Explore portion in the options menu
     //Assemble the <li> items for the <ul> and make the options <ul> show on screen
     this.optionsList = ko.observableArray([]);
@@ -89,17 +94,17 @@ function viewModel () {
     }
 
     this.chosenOption = ko.observable ();
-
     this.setOption = function(clickedOption) {
         self.chosenOption(clickedOption);
         console.log ("KO testing value: " + self.chosenOption().value());
     }
-
 };
 
 ko.applyBindings (new viewModel());
 
-
+//Zoom to neighborhood as user click on a name on each neighborhood list
+viewModel.zoomToSelected = function() {
+}
 
 // Google Map
 var map;
@@ -120,6 +125,10 @@ for (key in options) {
     });
 }
 
+
+//While most other APIs just return data, Google Maps API is unusual 
+//in that it include its own View Model that is downloaded when you make a successful Google Maps request.
+//This function initMap() is the calback of Google Maps API
 function initMap() {
     //style the map
     var styles = [
@@ -174,63 +183,6 @@ function initMap() {
     // Create a "highlighted location" marker color for when the user
     // mouses over the marker.
     highlightedIcon = makeMarkerIcon('ff0000');
-
-    //Reset map for a new search
-    $(".reload").click (function() {
-        resetMap();
-    });
-
-    //Zoom to neighborhood as user click on a name on the list
-    $(".neighborhoods").click (function() {
-        //make sure only one neighborhood is selected at a time
-        $(".neighborhoods").removeClass ("selected");
-        $(this).addClass ("selected");
-        //clear all previous search results
-        hideAllListings();
-        //Reset value of the neighborhood search box (display on mobile)
-        $("#neighborhood").val (function () {
-            return this.defaultValue;
-        });
-        zoomToSelected();
-    });
-
-    //Zoom to neighborhood when user manually type in a neighborhood name on the search box (display on mobile)
-    $("#zoomToArea").click (function() {
-        //clear previous seach results
-        hideAllListings ();
-        //Remove any previously selected neighborhoods from the svgmap list
-        $(".neighborhood").removeClass ("selected");
-        //initialize the geocoder
-        zoomToNeighborhood();
-    });
-
-    //Drop markers on the map when user select an explore option
-    $(".options").click (function() {
-        //make sure only one item is chosen at a time
-        $(".options").removeClass ("chosen");
-        $(this).addClass ("chosen");
-        //Show the cross 
-        $(".chosen ~ button"). show();
-        //Foursquare API ajax request 
-        foursquareCall();
-    });
-
-    $(".clear").click (function() {
-        var catergory = $(this).siblings(".options").attr('data-value');
-        console.log ('Clear markers for: ' + catergory);
-        //empty only the matching catergory array in the {markers}
-        for (i=0; i < markers[catergory].length; i++) {
-            markers[catergory][i].setMap(null);
-        }
-        //hide the cross
-        $(this).hide();
-        //if <p> happens to be chosen, remove class chosen
-        $(this).siblings(".options").removeClass("chosen");
-    });
-
-    $("#empty").click (function() {
-        hideAllListings(); //one click to wipe out all search results in the explore section (not neighborhood)
-    });
 }
 
 //Reset map for a new search

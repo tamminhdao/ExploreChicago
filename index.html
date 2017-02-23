@@ -22,22 +22,26 @@
                 </span>
                 <div>
                     <ul class="hidden" id="north" data-bind="foreach: northSide">
-                        <li class="neighborhoods" data-bind="text: $data"></li>
+                        <li class="neighborhoods" data-bind="text: $data, click: $parent.pickNeighborhood,
+                                                            css: { selected: $data == $root.selectedNeighborhood() }"></li>
                     </ul>
                 </div>
                 <div>
                     <ul class="hidden" id="downtown" data-bind="foreach: downtown">
-                        <li class="neighborhoods" data-bind="text: $data"></li>
+                        <li class="neighborhoods" data-bind="text: $data, click: $parent.pickNeighborhood,
+                                                            css: { selected: $data == $root.selectedNeighborhood() }"></li>
                     </ul>
                 </div>
                 <div>
                     <ul class="hidden" id="west" data-bind="foreach: westSide">
-                        <li class="neighborhoods" data-bind="text: $data"></li>
+                        <li class="neighborhoods" data-bind="text: $data, click: $parent.pickNeighborhood,
+                                                            css: { selected: $data == $root.selectedNeighborhood() }"></li>
                     </ul>
                 </div>
                 <div>
                     <ul class="hidden" id="south" data-bind="foreach: southSide">
-                        <li class="neighborhoods" data-bind="text: $data"></li>
+                        <li class="neighborhoods" data-bind="text: $data, click: $parent.pickNeighborhood,
+                                                            css: { selected: $data == $root.selectedNeighborhood() }"></li>
                     </ul>
                 </div>
                 <div class="mobile">
@@ -48,7 +52,9 @@
             <div class="choices">
                 <h3>2. EXPLORE</h3>
                 <ul id="interest" data-bind="foreach: optionsList">
-                    <li class="options" data-bind="text: label, attr: {'data-value': value}, click: $parent.setOption"><button class="clear">&#735;</button></li>
+                    <li class="options" data-bind="text: label, attr: {'data-value': value}, 
+                                                    click: $parent.setOption, 
+                                                    css : { chosen: $data == $root.chosenOption() }"></li>
                 </ul>
                 <input id="empty" type="button" value="Hide All Listings">
             </div>

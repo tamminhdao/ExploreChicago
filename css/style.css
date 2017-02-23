@@ -149,10 +149,12 @@ li {
     color: #ffd633;
 }
 
+
 .selected {
     font-weight: bold;
     font-size: 1.2em;
 }
+
 
 #neighborhood {
     width: 75%;
@@ -176,6 +178,7 @@ li {
     padding-left: 5%;
     text-align: left;
 }
+
 
 .chosen {
     font-weight: bold;
