@@ -35,8 +35,8 @@ var exploreOption = function(data) {
     this.value = ko.observable (data.value);
 };
 
-//ViewModel
-function viewModel () {
+//ViewModel constructor function
+function ViewModel () {
     var self = this;
 
     //Knockout Bindings for the Header
@@ -102,10 +102,9 @@ function viewModel () {
     }
 };
 
-ko.applyBindings (new viewModel());
-
 //Zoom to neighborhood as user click on a name on each neighborhood list
-viewModel.zoomToSelected = function() {
+ViewModel.prototype.zoomToSelected = function() {
+    var self = this;
     var geocoder = new google.maps.Geocoder ();
     geocoder.geocode ({
         address: self.selectedNeighborhood(), //obtain selected neighborhood name to use as zoom-in address
@@ -120,6 +119,9 @@ viewModel.zoomToSelected = function() {
         }
     });
 }
+
+var vm = new ViewModel() 
+ko.applyBindings (vm);
 
 // Google Map
 var map;
@@ -191,7 +193,4 @@ function initMap() {
         styles: styles,
         mapTypeControl: false
     });
-
-    //Call viewModel methods
-    viewModel.zoomToSelected();
 }
