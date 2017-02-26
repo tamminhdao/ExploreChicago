@@ -19,8 +19,8 @@ body {
     color: #fff;
     line-height: 35px;
     text-align: left;
-    height: 100vh; /*viewport height*/
-    padding: 20px; 
+    height: 100vh; /*vh: viewport height*/
+    padding: 0 20px; /*so that the content has some space from the border but the height of the box doesn't overflow the Gmap*/
     overflow: auto; /*prevent div from collapsing becausing of its floating children*/
 }
 
