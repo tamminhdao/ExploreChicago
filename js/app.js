@@ -301,7 +301,9 @@ function foursquareCall() {
                     var longitude = restaurantList[i].location.lng;
                     var latLng = new google.maps.LatLng(latitude, longitude);
                     //obtain the name of each venue to use later in infowindow
-                    var title = restaurantList[i].name;
+                    var title = 'Name: ' + restaurantList[i].name + '<br><br>'
+                                + 'Address: ' + restaurantList[i].location.address + '<br><br>' 
+                                + 'Phone: ' + restaurantList[i].contact.formattedPhone;
                     var marker = new google.maps.Marker({
                         position: latLng,
                         map: map,
