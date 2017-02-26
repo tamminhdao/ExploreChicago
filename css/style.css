@@ -19,7 +19,7 @@ body {
     color: #fff;
     line-height: 35px;
     text-align: left;
-    height: 100%;
+    height: 100vh; /*viewport height*/
     padding: 20px; 
     overflow: auto; /*prevent div from collapsing becausing of its floating children*/
 }
