@@ -28,7 +28,7 @@ for (key in neighborhoodNames) {
     neighborhoodNames[key].forEach (function (value) {
         var formattedNames = htmlNames.replace ("%data%", value);
         $("#" + key).append(formattedNames);
-    })
+    });
 }
 
 //A list of Explore options
@@ -62,7 +62,7 @@ for (key in options) {
         var formattedOptions = htmlOptions.replace("%label%", item.label);
         var formattedOptions = formattedOptions.replace("%value%", item.value);
         $("#interest").append(formattedOptions);
-    })
+    });
 }
 
 // Google Map
@@ -82,6 +82,13 @@ for (key in options) {
     options[key].forEach (function (item) {
         markers[item.value] = [];
     });
+}
+
+//Error handling for Google Maps APIs
+function errorHandling () {
+    var notice = '<h1 align="center"> GOOGLE MAPS DOESN\'T WORK!</h1>';
+    notice += '<h1 align="center"> Please try again later! </h1>';
+    $('#map').append(notice);
 }
 
 function initMap() {
@@ -249,7 +256,7 @@ function zoomToNeighborhood() {
         geocoder.geocode ({
             address: neighborhood,
             componentRestrictions: {locality: 'Chicago'}
-        }, function(results, status){
+        }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
                 map.setZoom(15);
@@ -270,24 +277,18 @@ function foursquareCall() {
     //Obtain the search keyword for the query param
     var searchKeyword = $(".chosen").attr('data-value');
     console.log('Searching for: ' + searchKeyword);
-    
-    var largeInfowindow = new google.maps.InfoWindow();
+
+    //create one infowindow instances to share among all markers
+    var oneInfowindow = new google.maps.InfoWindow();
 
     var foursquareUrl = "https://api.foursquare.com/v2/venues/search?ll=" + latlng + "&query=" + searchKeyword + "&radius=800&client_id=POWMWFWIJYX2DYSPVDZGWUALNC4RON5ROTEPHNDZKIYOTUTR&client_secret=PHC4Z52PPQJM5SMCLNN4UAGVYW5PQIKOWX23FDQWLCVB3J3S&v=20170203";
     console.log(foursquareUrl);
 
-    //Handle Error
-    var requestTimeout = setTimeout (function(){
-        window.alert ("Foursquare is taking longer than usual to response.");
-    }, 5000); //wait 5 sec
-
     $.ajax({
+        method: 'GET',
         url: foursquareUrl,
-        dataType: 'jsonp',
-        success: function (response) {
-            //If ajax resquest went through, abort error alert
-            clearTimeout (requestTimeout);
-
+        dataType: 'jsonp'
+    }).done (function (response) {
             var restaurantList = response.response.venues;
             //check if the ajax request return any result
             if (restaurantList.length == 0) {
@@ -300,26 +301,40 @@ function foursquareCall() {
                     var latitude = restaurantList[i].location.lat;
                     var longitude = restaurantList[i].location.lng;
                     var latLng = new google.maps.LatLng(latitude, longitude);
-                    //obtain the name of each venue to use later in infowindow
-                    var title = 'Name: ' + restaurantList[i].name + '<br><br>'
-                                + 'Address: ' + restaurantList[i].location.address + '<br><br>' 
-                                + 'Phone: ' + restaurantList[i].contact.formattedPhone;
+                    var name = restaurantList[i].name || 'No name provided';
+                    var address = restaurantList[i].location.address || 'No address provided';
+                    var phoneNumber = restaurantList[i].contact.formattedPhone || 'No phone number provided';
+                    //obtain the details of each venue to use later in infowindow
+                    var info = 'Name: ' + name + '<br><br>'
+                                + 'Address: ' + address + '<br><br>' 
+                                + 'Phone Number: ' + phoneNumber;
+
                     var marker = new google.maps.Marker({
                         position: latLng,
                         map: map,
                         icon: defaultIcon,
-                        title: title,
+                        title: info,
                         animation: google.maps.Animation.DROP,
-                    })
+                    });
 
                     //Push each marker into our array of markers
                     //so we can hide all markers of the same catergory
                     markers[searchKeyword].push(marker);
 
+                    //extend map bounds to include all markers on the screen
+                    var bounds = new google.maps.LatLngBounds();
+                    markers[searchKeyword].forEach (function (marker) {
+                        bounds.extend(marker.position);
+                    });
+                    //make sure map markers always fit on screen as user resizes their browser window
+                    google.maps.event.addDomListener(window, 'resize', function() {
+                        map.fitBounds(bounds);
+                    });
+
                     //Create an onclick event to open an infowindow when each marker is clicked
                     marker.addListener('click', function() {
-                        populateInfoWindow (this, largeInfowindow);
-                    })
+                        populateInfoWindow (this, oneInfowindow);
+                    });
 
                     // Two event listeners - one for mouseover, one for mouseout,
                     // to change the colors back and forth.
@@ -331,8 +346,11 @@ function foursquareCall() {
                     });
                 }
             }
-            //console.log (markers[searchKeyword].length);
-        }
+        }).fail (function(jqXHR, textStatus, errorThrown) {
+        console.log ('Status code: ' + jqXHR.status); 
+        console.log ('Text status: ' + textStatus);
+        console.log ('Error thrown: ' + errorThrown);
+        window.alert ('Cannot retrieve data from Foursquare at the moment!');
     });
 }
 

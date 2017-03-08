@@ -56,8 +56,10 @@
     <script src="js/lib/raphael.min.js"></script>
     <script src="js/lib/jquery-3.1.1.min.js"></script>
     <script src="js/svgmap.js"></script>
+    <!--Load the app.js file before starting loading map asynchronously to make sure that Map's callback function or error function is ready to be called-->
     <script src="js/app.js"></script>
     <script async defer
+        onerror="errorHandling()"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZxxM48htFpA11dooqdDV49iOxb8MUigc&v=3&callback=initMap">
     </script>
     </body>
