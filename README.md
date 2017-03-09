@@ -1,8 +1,8 @@
-# ExploreChicago
+# Explore Chicago
 ===============================
 
 ### Overview
-This is a single-page, responsive application, hosted on Github Pages at https://tamminhdao.github.io/ExploreChicago
+This is a single-page, responsive application, hosted on Github Pages at https://tamminhdao.github.io/ExploreChicago.
 The app is built with jQuery. The svg map on the menu is built with Raphael.js
 
 ### App functionalities
