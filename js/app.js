@@ -47,9 +47,6 @@ var options = {
         "value": "bookstore",
         "label": "Looking for a bookstore"
     }, {
-        "value": "atm",
-        "label": "Looking for an ATM"
-    }, {
         "value": "yoga",
         "label": "Looking for a yoga studio"
     }]
