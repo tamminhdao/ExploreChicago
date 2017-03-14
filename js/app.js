@@ -225,15 +225,16 @@ function resetMap() {
 
 //Zoom to neighborhood as user click on a name on the list
 function zoomToSelected() {
-    var chosenName = $(".selected").text();
+    var chosenName = $(".selected").text() + ' Chicago';
+    console.log (chosenName);
     var geocoder = new google.maps.Geocoder ();
     geocoder.geocode ({
         address: chosenName,
-        componentRestrictions: {locality: 'Chicago'}
+        //componentRestrictions: {locality: 'Chicago'}
     }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-                map.setCenter(results[0].geometry.location);
-                map.setZoom(15);
+            map.setCenter(results[0].geometry.location);
+            map.setZoom(15);
         }
         else {
             window.alert ('We are having problems locating this neighborhood. Please try again!');
@@ -245,14 +246,14 @@ function zoomToSelected() {
 function zoomToNeighborhood() {
     var geocoder = new google.maps.Geocoder();
     //obtain the user-input adress
-    var neighborhood = $("#neighborhood").val();
+    var neighborhood = $("#neighborhood").val() + ' Chicago';
     //make sure the input value is not blank
     if (neighborhood == '') {
         window.alert ('You must enter an valid neighborhood name');
     } else {
         geocoder.geocode ({
             address: neighborhood,
-            componentRestrictions: {locality: 'Chicago'}
+            //componentRestrictions: {locality: 'Chicago'}
         }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);

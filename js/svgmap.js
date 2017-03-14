@@ -63,6 +63,6 @@ for (area in chicago) {
             document.getElementById("intro").style.display = "none";
             document.getElementById(area).style.display = "block";
             current = area;
-        }, true);
+        });
     })(chicago[area], area);
 }
